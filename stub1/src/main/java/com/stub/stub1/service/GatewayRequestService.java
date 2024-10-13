@@ -69,7 +69,7 @@ public class GatewayRequestService {
 
         try (Scope scope = span.makeCurrent()) {
             String path = determinePathFromMessage(message);
-            String gatewayUrl = "http://3.108.54.64:8347/api/" + path;
+            String gatewayUrl = "http://3.108.54.64:8347/proxyapi/" + path;
 
             span.setAttribute("http.url", gatewayUrl);
             span.setAttribute("http.method", "POST");
