@@ -80,45 +80,15 @@
 // }
 // }
 
-// package com.stub.stub1.service;
-
-// import org.springframework.kafka.annotation.KafkaListener;
-// import org.springframework.stereotype.Service;
-
-// @Service
-// public class Service1 {
-
-//     private final GatewayRequestService gatewayRequestService;
-
-//     public Service1(GatewayRequestService gatewayRequestService) {
-//         this.gatewayRequestService = gatewayRequestService;
-//     }
-
-//     @KafkaListener(topics = "service1-topic", groupId = "group_id")
-//     public void consumeFromKafka(String message) {
-//         System.out.println("Kafka message consumed: " + message);
-//         gatewayRequestService.forwardMessageToGateway(message);
-//     }
-// }
-
-
 package com.stub.stub1.service;
 
-import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.SpanKind;
-import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Scope;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-import io.opentelemetry.api.common.AttributeKey; // Ensure this is imported
-import io.opentelemetry.api.trace.StatusCode; // Import this for StatusCode
 
 @Service
 public class Service1 {
 
     private final GatewayRequestService gatewayRequestService;
-    private final Tracer tracer = GlobalOpenTelemetry.getTracer("service1-tracer");
 
     public Service1(GatewayRequestService gatewayRequestService) {
         this.gatewayRequestService = gatewayRequestService;
@@ -126,23 +96,52 @@ public class Service1 {
 
     @KafkaListener(topics = "service1-topic", groupId = "group_id")
     public void consumeFromKafka(String message) {
-        Span span = tracer.spanBuilder("Kafka message processing")
-                .setSpanKind(SpanKind.CONSUMER) 
-                .startSpan();
-
-        try (Scope scope = span.makeCurrent()) {
-            System.out.println("Kafka message consumed: " + message);
-
-            gatewayRequestService.forwardMessageToGateway(message);
-
-            span.setAttribute("kafka.message", message); // Setting attribute
-            span.setStatus(StatusCode.OK); // Set status to OK for successful processing
-        } catch (Exception e) {
-            span.recordException(e);
-            span.setStatus(StatusCode.ERROR); // Set status to ERROR in case of exception
-            throw e;
-        } finally {
-            span.end();
-        }
+        System.out.println("Kafka message consumed: " + message);
+        gatewayRequestService.forwardMessageToGateway(message);
     }
 }
+
+
+// package com.stub.stub1.service;
+
+// import io.opentelemetry.api.GlobalOpenTelemetry;
+// import io.opentelemetry.api.trace.Span;
+// import io.opentelemetry.api.trace.SpanKind;
+// import io.opentelemetry.api.trace.Tracer;
+// import io.opentelemetry.context.Scope;
+// import org.springframework.kafka.annotation.KafkaListener;
+// import org.springframework.stereotype.Service;
+// import io.opentelemetry.api.trace.StatusCode; 
+
+// @Service
+// public class Service1 {
+
+//     private final GatewayRequestService gatewayRequestService;
+//     private final Tracer tracer = GlobalOpenTelemetry.getTracer("service1-tracer");
+
+//     public Service1(GatewayRequestService gatewayRequestService) {
+//         this.gatewayRequestService = gatewayRequestService;
+//     }
+
+//     @KafkaListener(topics = "service1-topic", groupId = "group_id")
+//     public void consumeFromKafka(String message) {
+//         Span span = tracer.spanBuilder("Kafka message processing")
+//                 .setSpanKind(SpanKind.CONSUMER) 
+//                 .startSpan();
+
+//         try (Scope scope = span.makeCurrent()) {
+//             System.out.println("Kafka message consumed: " + message);
+
+//             gatewayRequestService.forwardMessageToGateway(message);
+
+//             span.setAttribute("kafka.message", message); // Setting attribute
+//             span.setStatus(StatusCode.OK); // Set status to OK for successful processing
+//         } catch (Exception e) {
+//             span.recordException(e);
+//             span.setStatus(StatusCode.ERROR); // Set status to ERROR in case of exception
+//             throw e;
+//         } finally {
+//             span.end();
+//         }
+//     }
+// }

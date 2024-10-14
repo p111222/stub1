@@ -32,6 +32,12 @@ COPY --from=build /app/target/*.jar app.jar
 # Ensure you are using the correct version of the agent
 RUN curl -L https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar -o opentelemetry-javaagent.jar
 
+# Add environment variables for OpenTelemetry
+ENV OTEL_TRACES_EXPORTER=jaeger \
+    OTEL_SERVICE_NAME=stub1 \
+    OTEL_EXPORTER_JAEGER_ENDPOINT=http://3.108.54.64:14250 \
+    OTEL_RESOURCE_ATTRIBUTES=service.version=1.0,deployment.environment=prod
+
 # Expose the port that your Spring Boot application will run on
 EXPOSE 8080
 
