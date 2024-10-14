@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>io.opentelemetry</groupId>
 			<artifactId>opentelemetry-exporter-jaeger</artifactId>
-			<version>1.24.0</version>			
+			<version>1.30.0</version>			
 		</dependency>
 
 		<dependency>
