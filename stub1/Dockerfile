@@ -36,7 +36,7 @@ RUN curl -L https://github.com/open-telemetry/opentelemetry-java-instrumentation
 ENV OTEL_TRACES_EXPORTER=jaeger \
     OTEL_SERVICE_NAME=stub1 \
     OTEL_EXPORTER_JAEGER_ENDPOINT=http://3.108.54.64:8347/api/traces \
-    OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+    OTEL_EXPORTER_OTLP_PROTOCOL=http/json \
     OTEL_RESOURCE_ATTRIBUTES=service.version=1.0,deployment.environment=prod
 
 # Expose the port that your Spring Boot application will run on

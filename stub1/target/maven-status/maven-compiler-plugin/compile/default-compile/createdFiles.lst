@@ -1,8 +1,0 @@
-com\stub\stub1\config\GatewayConfig.class
-com\stub\stub1\controller\WebClientController.class
-com\stub\stub1\service\Service2.class
-com\stub\stub1\service\WebClientService.class
-com\stub\stub1\service\GatewayRequestService.class
-com\stub\stub1\Stub1Application.class
-com\stub\stub1\config\KafkaConsumerConfig.class
-com\stub\stub1\service\Service1.class
